@@ -1,0 +1,22 @@
+name: Manter Todos Apps Ativos
+
+on:
+  schedule:
+    - cron: '0 0,12 * * *' # Roda 12:00 e 00:00 UTC
+  workflow_dispatch: # Permite rodar manualmente para testar
+
+jobs:
+  ping_apps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Acordar a Frota
+        run: |
+          curl -I https://evidencias.streamlit.app/
+          curl -I https://app-pdi.streamlit.app/
+          curl -I https://centralsattealam.streamlit.app/
+          curl -I https://oficinasattealam.streamlit.app/
+
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v1
